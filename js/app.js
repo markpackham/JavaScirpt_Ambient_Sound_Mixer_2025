@@ -1,10 +1,10 @@
 import {sounds, defaultPresets} from "./soundData.js";
+import {SoundManger} from "./soundManager.js"
 
 class AmbientMixer {
     // Init the dependencies & default state
     constructor() {
-        console.log("Init state...");
-        this.soundManger = null;
+        this.soundManger = new SoundManger();
         this.ui = null;
         this.presetManger = null;
         this.timer = null;
