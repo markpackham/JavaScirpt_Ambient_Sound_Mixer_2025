@@ -14,11 +14,25 @@ class AmbientMixer {
 
   init() {
     try {
-      this.soundManger.loadSound("rain", "audio/rain.mp3");
+      // Load all sound files
+      this.loadAllSounds();
+
       this.isInitialized = true;
     } catch (error) {
       console.error("Failed to init app: " + error);
     }
+  }
+
+  // Load all sound files
+  loadAllSounds() {
+    sounds.forEach((sound) => {
+      const audioUrl = `audio/${sound.file}`;
+      const success = this.soundManger.loadSound(sound.id, audioUrl);
+
+      if (!success) {
+        console.warn(`Could not load sound: ${sound.name} from ${audioUrl}`);
+      }
+    });
   }
 }
 

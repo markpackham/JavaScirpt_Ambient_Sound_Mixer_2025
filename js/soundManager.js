@@ -2,7 +2,6 @@ export class SoundManger {
   constructor() {
     this.audioElements = new Map();
     this.isPlaying = false;
-    console.log("SoundManger created");
   }
 
   // Load a sound file
