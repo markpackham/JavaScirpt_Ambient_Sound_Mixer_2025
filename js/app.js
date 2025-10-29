@@ -12,14 +12,10 @@ class AmbientMixer {
     this.isInitialized = false;
   }
 
-  async init() {
+  init() {
     try {
       // Load all sound files
       this.loadAllSounds();
-
-      // Try to play rain
-      this.soundManger.setVolume("rain", 30);
-      await this.soundManger.playSound("rain");
 
       this.isInitialized = true;
     } catch (error) {
