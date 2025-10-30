@@ -69,11 +69,11 @@ class AmbientMixer {
       // Sound is off, turn it on
       this.soundManger.setVolume(soundId, 50);
       await this.soundManger.playSound(soundId);
-      // Update play button
+      this.ui.updateSoundPlayButton(soundId, true);
     } else {
       // Sound is on, shut it off
       this.soundManger.pauseSound(soundId);
-      // Update play button
+      this.ui.updateSoundPlayButton(soundId, false);
     }
   }
 }
