@@ -28,7 +28,6 @@ export class SoundManger {
     if (audio) {
       try {
         await audio.play();
-        console.log(`Playing: ${soundId}`);
         return true;
       } catch (error) {
         console.error(`Failed to play ${soundId}`, error);
@@ -43,7 +42,6 @@ export class SoundManger {
 
     if (audio && !audio.paused) {
       audio.pause();
-      console.log(`Paused: ${soundId}`);
     }
   }
 
@@ -58,7 +56,6 @@ export class SoundManger {
 
     // Convert 0-100. to 0-1 (by default we deal with a decimal so have to convert it)
     audio.volume = volume / 100;
-    console.log(`Volume for ${soundId}: ${volume}`);
     return true;
   }
 }
