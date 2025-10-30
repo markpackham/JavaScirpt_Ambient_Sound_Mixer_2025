@@ -75,8 +75,19 @@ class AmbientMixer {
     }
 
     if (audio.paused) {
+      // Get current sound slider value
+      const card = document.querySelector(`[data-sound="${soundId}"]`);
+      const slider = card.querySelector(".volume-slider");
+      let volume = parseInt(slider.value);
+
+      // If slider is at 0 default to 50%
+      if (volume === 0) {
+        volume = 50;
+        this.ui.updateVolumeDisplay(soundId, volume);
+      }
+
       // Sound is off, turn it on
-      this.soundManger.setVolume(soundId, 50);
+      this.soundManger.setVolume(soundId, volume);
       await this.soundManger.playSound(soundId);
       this.ui.updateSoundPlayButton(soundId, true);
     } else {
