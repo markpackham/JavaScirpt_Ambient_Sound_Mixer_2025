@@ -26,7 +26,7 @@ export class UI {
   }
 
   // Create sound card HTML
-  createSoundCards(sound) {
+  createSoundCard(sound) {
     const card = document.createElement("div");
     card.className =
       "sound-card bg-white/10 backdrop-blur-md rounded-2xl p-6 relative overflow-hidden transition-all duration-300";
@@ -64,5 +64,14 @@ export class UI {
       </div>
     </div>`;
     return card;
+  }
+
+  // Render all sound cards
+  renderSoundCards(sounds) {
+    this.soundCardsContainer.innerHTML = "";
+    sounds.forEach((sound) => {
+      const card = this.createSoundCard(sound);
+      this.soundCardsContainer.appendChild(card);
+    });
   }
 }
