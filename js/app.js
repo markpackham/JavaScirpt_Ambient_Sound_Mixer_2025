@@ -42,6 +42,15 @@ class AmbientMixer {
         await this.toggleSound(soundId);
       }
     });
+
+    // Handle volume slider changes
+    document.addEventListener("input", (e) => {
+      if (e.target.classList.contains("volume-slider")) {
+        const soundId = e.target.dataset.sound;
+        const volume = parseInt(e.target.value);
+        this.setSoundVolume(soundId, volume);
+      }
+    });
   }
 
   // Load all sound files
@@ -75,6 +84,15 @@ class AmbientMixer {
       this.soundManger.pauseSound(soundId);
       this.ui.updateSoundPlayButton(soundId, false);
     }
+  }
+
+  // Set sound volume
+  setSoundVolume(soundId, volume) {
+    // Update sound volume in manager
+    this.soundManger.setVolume(soundId, volume);
+
+    // Update the visual display
+    this.ui.updateVolumeDisplay(soundId, volume);
   }
 }
 
