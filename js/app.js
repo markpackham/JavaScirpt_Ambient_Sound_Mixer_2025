@@ -1,11 +1,11 @@
 import { sounds, defaultPresets } from "./soundData.js";
-import { SoundManger } from "./soundManager.js";
+import { soundManager } from "./soundManager.js";
 import { UI } from "./ui.js";
 
 class AmbientMixer {
   // Init the dependencies & default state
   constructor() {
-    this.soundManger = new SoundManger();
+    this.soundManager = new soundManager();
     this.ui = new UI();
     this.presetManger = null;
     this.timer = null;
@@ -67,7 +67,7 @@ class AmbientMixer {
   loadAllSounds() {
     sounds.forEach((sound) => {
       const audioUrl = `audio/${sound.file}`;
-      const success = this.soundManger.loadSound(sound.id, audioUrl);
+      const success = this.soundManager.loadSound(sound.id, audioUrl);
 
       if (!success) {
         console.warn(`Could not load sound: ${sound.name} from ${audioUrl}`);
@@ -77,7 +77,7 @@ class AmbientMixer {
 
   // Toggle individual sound
   async toggleSound(soundId) {
-    const audio = this.soundManger.audioElements.get(soundId);
+    const audio = this.soundManager.audioElements.get(soundId);
 
     if (!audio) {
       console.error(`Sound ${soundId} not found`);
@@ -97,28 +97,28 @@ class AmbientMixer {
       }
 
       // Sound is off, turn it on
-      this.soundManger.setVolume(soundId, volume);
-      await this.soundManger.playSound(soundId);
+      this.soundManager.setVolume(soundId, volume);
+      await this.soundManager.playSound(soundId);
       this.ui.updateSoundPlayButton(soundId, true);
     } else {
       // Sound is on, shut it off
-      this.soundManger.pauseSound(soundId);
+      this.soundManager.pauseSound(soundId);
       this.ui.updateSoundPlayButton(soundId, false);
     }
   }
 
   // Toggle all sounds
   toggleAllSounds() {
-    if (this.soundManger.isPlaying) {
+    if (this.soundManager.isPlaying) {
       // Toggle sounds off
-      this.soundManger.pauseAll();
+      this.soundManager.pauseAll();
       this.ui.updateMainPlayButton(false);
       sounds.forEach((sound) => {
         this.ui.updateSoundPlayButton(sound.id, false);
       });
     } else {
       // Toggle sounds on
-      for (const [soundId, audio] of this.soundManger.audioElements) {
+      for (const [soundId, audio] of this.soundManager.audioElements) {
         const card = document.querySelector(`[data-sound="${soundId}"]`);
         const slider = card?.querySelector(".volume-slider");
 
@@ -130,8 +130,18 @@ class AmbientMixer {
             slider.value = 50;
             this.ui.updateVolumeDisplay(soundId, 50);
           }
-        }
+
+          this.currentSoundState[soundId] = volume;
+
+          const effectiveVolume = (volume * this.masterVolume) / 100;
+          audio.volume = effectiveVolume / 100
+          this.ui.updateSoundPlayButton(soundId, true)
       }
+
+      // Play all sounds
+      this.soundManager.playAll();
+      
+      this.ui.updateMainPlayButton(true)
     }
   }
 
@@ -141,7 +151,7 @@ class AmbientMixer {
     const effectiveVolume = (volume * this.masterVolume) / 100;
 
     // Update the sound volume with the scaled volume
-    const audio = this.soundManger.audioElements.get(soundId);
+    const audio = this.soundManager.audioElements.get(soundId);
 
     if (audio) {
       audio.volume = effectiveVolume / 100;
@@ -167,7 +177,7 @@ class AmbientMixer {
 
   // Apply master volume to all playing sounds
   applyMasterVolumeToAll() {
-    for (const [soundId, audio] of this.soundManger.audioElements) {
+    for (const [soundId, audio] of this.soundManager.audioElements) {
       if (!audio.paused) {
         const card = document.querySelector(`[data-sound="${soundId}"]`);
         const slider = card?.querySelector(".volume-slider");
@@ -188,7 +198,7 @@ class AmbientMixer {
   updateMainPlayButtonState() {
     // Check if any sounds are playing
     let anySoundsPlaying = false;
-    for (const [soundId, audio] of this.soundManger.audioElements) {
+    for (const [soundId, audio] of this.soundManager.audioElements) {
       if (!audio.paused) {
         anySoundsPlaying = true;
         break;
@@ -196,7 +206,7 @@ class AmbientMixer {
     }
 
     // Update the main button and the internal state
-    this.soundManger.isPlaying = anySoundsPlaying;
+    this.soundManager.isPlaying = anySoundsPlaying;
     this.ui.updateMainPlayButton(anySoundsPlaying);
   }
 }
