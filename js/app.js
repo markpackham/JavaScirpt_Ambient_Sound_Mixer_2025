@@ -134,14 +134,15 @@ class AmbientMixer {
           this.currentSoundState[soundId] = volume;
 
           const effectiveVolume = (volume * this.masterVolume) / 100;
-          audio.volume = effectiveVolume / 100
-          this.ui.updateSoundPlayButton(soundId, true)
+          audio.volume = effectiveVolume / 100;
+          this.ui.updateSoundPlayButton(soundId, true);
+        }
       }
 
       // Play all sounds
       this.soundManager.playAll();
-      
-      this.ui.updateMainPlayButton(true)
+
+      this.ui.updateMainPlayButton(true);
     }
   }
 
