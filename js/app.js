@@ -107,6 +107,34 @@ class AmbientMixer {
     }
   }
 
+  // Toggle all sounds
+  toggleAllSounds() {
+    if (this.soundManger.isPlaying) {
+      // Toggle sounds off
+      this.soundManger.pauseAll();
+      this.ui.updateMainPlayButton(false);
+      sounds.forEach((sound) => {
+        this.ui.updateSoundPlayButton(sound.id, false);
+      });
+    } else {
+      // Toggle sounds on
+      for (const [soundId, audio] of this.soundManger.audioElements) {
+        const card = document.querySelector(`[data-sound="${soundId}"]`);
+        const slider = card?.querySelector(".volume-slider");
+
+        if (slider) {
+          let volume = parseInt(slider.value);
+
+          if (volume === 0) {
+            volume = 50;
+            slider.value = 50;
+            this.ui.updateVolumeDisplay(soundId, 50);
+          }
+        }
+      }
+    }
+  }
+
   // Set sound volume
   setSoundVolume(soundId, volume) {
     // Calculate effective volume with master volume
@@ -154,6 +182,22 @@ class AmbientMixer {
         }
       }
     }
+  }
+
+  // Update main play button based on individual sounds
+  updateMainPlayButtonState() {
+    // Check if any sounds are playing
+    let anySoundsPlaying = false;
+    for (const [soundId, audio] of this.soundManger.audioElements) {
+      if (!audio.paused) {
+        anySoundsPlaying = true;
+        break;
+      }
+    }
+
+    // Update the main button and the internal state
+    this.soundManger.isPlaying = anySoundsPlaying;
+    this.ui.updateMainPlayButton(anySoundsPlaying);
   }
 }
 
