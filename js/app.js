@@ -61,6 +61,13 @@ class AmbientMixer {
         this.setMasterVolume(volume);
       });
     }
+
+    // Handle master play/pause button
+    if (this.ui.playPauseButton) {
+      this.ui.playPauseButton.addEventListener("click", () => {
+        this.toggleAllSounds();
+      });
+    }
   }
 
   // Load all sound files
@@ -105,6 +112,9 @@ class AmbientMixer {
       this.soundManager.pauseSound(soundId);
       this.ui.updateSoundPlayButton(soundId, false);
     }
+
+    // Update main play button state
+    this.updateMainPlayButtonState();
   }
 
   // Toggle all sounds
@@ -160,6 +170,9 @@ class AmbientMixer {
 
     // Update the visual display
     this.ui.updateVolumeDisplay(soundId, volume);
+
+    // Sync sounds
+    this.updateMainPlayButtonState();
   }
 
   // Set master volume
