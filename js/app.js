@@ -49,6 +49,12 @@ class AmbientMixer {
         const soundId = e.target.closest(".play-btn").dataset.sound;
         await this.toggleSound(soundId);
       }
+
+      // Check if a default present button was clicked
+      if (e.target.closest(".preset-btn")) {
+        const presetKey = e.target.closest(".preset-btn").dataset.preset;
+        await this.loadPreset(presetKey);
+      }
     });
 
     // Handle volume slider changes
@@ -251,11 +257,16 @@ class AmbientMixer {
     // Reset master volume
     this.masterVolume = 100;
 
+    // Reset sound states
+    sounds.forEach((sound) => {
+      this.currentSoundState[sound.id] = 0;
+    });
+
     // Reset UI
     this.ui.resetUI();
   }
 
-  // Load a preset config
+  // Load a preset config eg "sleep" related sounds
   loadPreset(presetKey) {
     const preset = defaultPresets[presetKey];
 
@@ -296,6 +307,10 @@ class AmbientMixer {
         this.ui.updateSoundPlayButton(soundId, true);
       }
     }
+
+    // Update main play button & state
+    this.soundManager.isPlaying = true;
+    this.ui.updateMainPlayButton(true);
   }
 }
 
