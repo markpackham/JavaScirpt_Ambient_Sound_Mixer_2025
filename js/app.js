@@ -28,7 +28,7 @@ class AmbientMixer {
       this.loadAllSounds();
 
       // Init sound states after loading sounds
-      sound.forEach((sound) => {
+      sounds.forEach((sound) => {
         this.currentSoundState[sound.id] = 0;
       });
 
@@ -104,6 +104,15 @@ class AmbientMixer {
         this.ui.hideModal();
       });
     }
+
+    // Close modal if backdrop is clicked
+    // if (this.ui.modal) {
+    //   this.ui.modal.addEventListener((e) => {
+    //     if (e.target === this.ui.modal) {
+    //       this.ui.hideModal();
+    //     }
+    //   });
+    // }
   }
 
   //////// END of Event Listeners
