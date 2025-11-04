@@ -1,3 +1,4 @@
+import { PresetManger } from "./presetManager.js";
 import { sounds, defaultPresets } from "./soundData.js";
 import { soundManager } from "./soundManager.js";
 import { UI } from "./ui.js";
@@ -7,7 +8,7 @@ class AmbientMixer {
   constructor() {
     this.soundManager = new soundManager();
     this.ui = new UI();
-    this.presetManger = null;
+    this.presetManger = new PresetManger();
     this.timer = null;
     this.currentSoundState = {};
     this.masterVolume = 100;
@@ -94,6 +95,14 @@ class AmbientMixer {
     if (saveButton) {
       saveButton.addEventListener("click", () => {
         this.showSavePresetModal();
+      });
+    }
+
+    // Confirm save preset button in the modal
+    const confirmSaveButton = document.getElementById("confirmSave");
+    if (confirmSaveButton) {
+      confirmSaveButton.addEventListener("click", () => {
+        this.saveCurrentPreset();
       });
     }
 
@@ -357,6 +366,24 @@ class AmbientMixer {
     }
 
     this.ui.showModal();
+  }
+
+  // Save current preset
+  saveCurrentPreset() {
+    const nameInput = document.getElementById("presetName");
+    const name = nameInput.value.trim();
+
+    if (!name) {
+      alert("Please enter a preset name");
+    }
+
+    if (this.presetManger.presetNameExists(name)) {
+      alert(`A preset with the name ${name} already exists!`);
+      return;
+    }
+
+    const presetId = this.presetManger.savePreset(name, this.currentSoundState);
+    this.ui.hideModal();
   }
 }
 
