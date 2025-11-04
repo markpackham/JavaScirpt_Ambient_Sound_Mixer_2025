@@ -383,6 +383,10 @@ class AmbientMixer {
     }
 
     const presetId = this.presetManger.savePreset(name, this.currentSoundState);
+
+    // Add custom preset button to UI
+    this.ui.addCustomPreset(name, presetId);
+
     this.ui.hideModal();
   }
 }
