@@ -9,6 +9,11 @@ export class PresetManger {
     return stored ? JSON.parse(stored) : {};
   }
 
+  // Load custom preset by ID
+  loadPreset(presetId) {
+    return this.customPresets[presetId] || null;
+  }
+
   // Save custom presets to localStorage
   saveCustomPresets() {
     localStorage.setItem(
