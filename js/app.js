@@ -308,6 +308,9 @@ class AmbientMixer {
     // Reset master volume
     this.masterVolume = 100;
 
+    // Reset active preset
+    this.ui.setActivePreset(null);
+
     // Reset sound states
     sounds.forEach((sound) => {
       this.currentSoundState[sound.id] = 0;
