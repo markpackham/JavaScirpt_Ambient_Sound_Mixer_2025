@@ -445,6 +445,30 @@ class AmbientMixer {
       this.ui.removeCustomPreset(presetId);
     }
   }
+
+  // Timer complete callback
+  onTimerComplete() {
+    // Stop all sounds
+    this.soundManager.pauseAll();
+    this.ui.updateMainPlayButton(false);
+
+    // Update individual buttons
+    sounds.forEach((sound) => {
+      this.ui.updateSoundPlayButton(sound.id, false);
+    });
+
+    // Reset timer dropdown
+    const timerSelect = document.getElementById("timerSelect");
+    if (timerSelect) {
+      timerSelect.value = "0";
+    }
+
+    // Clear & hide timer display
+    if (this.ui.timerDisplay) {
+      this.ui.timerDisplay.textContent = "";
+      this.ui.timerDisplay.classList.add("hidden");
+    }
+  }
 }
 
 // Init app when DOM is ready
