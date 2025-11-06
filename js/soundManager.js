@@ -1,4 +1,4 @@
-export class soundManager {
+export class SoundManager {
   constructor() {
     this.audioElements = new Map();
     this.isPlaying = false;

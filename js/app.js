@@ -147,6 +147,20 @@ class AmbientMixer {
         }
       });
     }
+
+    // Timer select
+    const timerSelect = document.getElementById("timerSelect");
+    if (timerSelect) {
+      // The trigger is a dropdown & not a button so we use "change" rather than "click"
+      timerSelect.addEventListener("change", (e) => {
+        const minutes = parseInt(e.target.value);
+        if (minutes > 0) {
+          this.timer.start(minutes);
+        } else {
+          this.timer.stop();
+        }
+      });
+    }
   }
 
   //////// END of Event Listeners
@@ -323,6 +337,12 @@ class AmbientMixer {
 
     // Reset master volume
     this.masterVolume = 100;
+
+    // Reset timer to 0
+    this.timer.stop();
+    if (this.ui.timerSelect) {
+      this.ui.timerSelect.value = "0";
+    }
 
     // Reset active preset
     this.ui.setActivePreset(null);
