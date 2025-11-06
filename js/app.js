@@ -54,6 +54,18 @@ class AmbientMixer {
         await this.toggleSound(soundId);
       }
 
+      // Check if delete button was clicked for preset
+      if (e.target.closest(".delete-preset")) {
+        /* stopPropagation() prevents further propagation of the current event in the capturing and bubbling phases. It does not, however, prevent any default behaviors from occurring; for instance */
+        e.stopPropagation();
+        const presetId = e.target.closest(".delete-preset").dataset.preset;
+
+        this.deleteCustomPreset(presetId);
+        this.resetAll();
+
+        return;
+      }
+
       // Check if a default present button was clicked
       if (e.target.closest(".preset-btn")) {
         const presetKey = e.target.closest(".preset-btn").dataset.preset;
@@ -420,6 +432,13 @@ class AmbientMixer {
     const customPresets = this.presetManger.customPresets;
     for (const [presetId, preset] of Object.entries(customPresets)) {
       this.ui.addCustomPreset(preset.name, presetId);
+    }
+  }
+
+  // Delete custom preset
+  deleteCustomPreset(presetId) {
+    if (this.presetManger.deletePreset(presetId)) {
+      this.ui.removeCustomPreset(presetId);
     }
   }
 }
