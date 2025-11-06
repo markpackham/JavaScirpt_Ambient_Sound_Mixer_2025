@@ -229,4 +229,21 @@ export class UI {
       button.remove();
     }
   }
+
+  // Update timer display
+  updateTimerDisplay(minutes, seconds) {
+    if (this.timerDisplay) {
+      if (minutes > 0 || seconds > 0) {
+        // Pad things so we don't have 2:5 but instead 02:50
+        const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds
+          .toString()
+          .padStart(2, "0")}`;
+
+        this.timerDisplay.textContent = formattedTime;
+        this.timerDisplay.classList.remove("hidden");
+      } else {
+        this.timerDisplay.classList.add("hidden");
+      }
+    }
+  }
 }
