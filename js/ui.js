@@ -218,4 +218,15 @@ export class UI {
       activeButton.classList.add("preset-active");
     }
   }
+
+  // Remove custom preset from UI
+  removeCustomPreset(presetId) {
+    const button = document.querySelector(
+      `.custom-preset-btn[data-preset="${presetId}"]`
+    );
+
+    if (button) {
+      button.remove();
+    }
+  }
 }
