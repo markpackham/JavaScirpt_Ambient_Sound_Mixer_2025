@@ -161,6 +161,13 @@ class AmbientMixer {
         }
       });
     }
+
+    // Light / Dark theme toggle
+    if (this.ui.themeToggle) {
+      this.ui.themeToggle.addEventListener("click", () => {
+        this.ui.toggleTheme();
+      });
+    }
   }
 
   //////// END of Event Listeners
