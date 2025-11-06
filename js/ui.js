@@ -246,4 +246,14 @@ export class UI {
       }
     }
   }
+
+  // Toggle theme
+  toggleTheme() {
+    const body = document.body;
+    const icon = this.toggleTheme.querySelector("i");
+
+    if (body.classList.contains("light-theme")) {
+      body.classList.remove("light-theme");
+    }
+  }
 }
