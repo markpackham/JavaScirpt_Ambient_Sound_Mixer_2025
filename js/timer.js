@@ -51,4 +51,22 @@ export class Timer {
     this.isRunning = false;
     this.updateDisplay();
   }
+
+  // Timer completed
+  complete() {
+    this.stop();
+    if (this.onComplete) {
+      this.onComplete();
+    }
+  }
+
+  // Update display
+  updateDisplay() {
+    const minutes = Math.floor(this.remaining / 60);
+    const seconds = this.remaining % 60;
+
+    if (this.onTick) {
+      this.onTick(minutes, seconds);
+    }
+  }
 }

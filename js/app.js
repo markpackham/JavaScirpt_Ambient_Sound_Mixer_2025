@@ -1,15 +1,19 @@
 import { PresetManger } from "./presetManager.js";
 import { sounds, defaultPresets } from "./soundData.js";
-import { soundManager } from "./soundManager.js";
+import { SoundManager } from "./soundManager.js";
 import { UI } from "./ui.js";
+import { Timer } from "./timer.js";
 
 class AmbientMixer {
   // Init the dependencies & default state
   constructor() {
-    this.soundManager = new soundManager();
+    this.soundManager = new SoundManager();
     this.ui = new UI();
     this.presetManger = new PresetManger();
-    this.timer = null;
+    this.timer = new Timer(
+      () => this.onTimerComplete(),
+      (minutes, seconds) => this.ui.updateTimerDisplay(minutes, seconds)
+    );
     this.currentSoundState = {};
     this.masterVolume = 100;
     this.isInitialized = false;
